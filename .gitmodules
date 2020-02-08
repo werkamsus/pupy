@@ -1,9 +1,9 @@
 [submodule "pupy/external/LaZagne"]
 	path = pupy/external/LaZagne
-	url = https://github.com/AlessandroZ/LaZagne
+	url = https://github.com/AlessandroZ/LaZagne.git
 [submodule "pupy/external/linux-exploit-suggester"]
 	path = pupy/external/linux-exploit-suggester
-	url = https://github.com/mzet-/linux-exploit-suggester
+	url = https://github.com/mzet-/linux-exploit-suggester.git
 [submodule "client/sources-linux/linux-inject"]
 	path = client/sources-linux/linux-inject
 	url = https://github.com/gaffe23/linux-inject.git
@@ -12,10 +12,10 @@
 	url = https://github.com/the-useless-one/pywerview.git
 [submodule "pupy/external/winpty"]
 	path = pupy/external/winpty
-	url = https://github.com/alxchk/winpty
+	url = https://github.com/alxchk/winpty.git
 [submodule "pupy/memorpy"]
 	path = pupy/external/memorpy
-	url = https://github.com/alxchk/memorpy
+	url = https://github.com/alxchk/memorpy.git
 [submodule "pupy/external/mimipy"]
 	path = pupy/external/mimipy
 	url = https://github.com/n1nj4sec/mimipy.git
@@ -27,22 +27,22 @@
 	url = https://github.com/Kevin-Robertson/Inveigh.git
 [submodule "pupy/external/pykcp"]
 	path = pupy/external/pykcp
-	url = https://github.com/alxchk/pykcp
+	url = https://github.com/alxchk/pykcp.git
 [submodule "pupy/pupy/external/BeRoot"]
 	path = pupy/external/BeRoot
-	url = https://github.com/AlessandroZ/BeRoot
+	url = https://github.com/AlessandroZ/BeRoot.git
 [submodule "client/toolchain/docker-old-tc-bootstrap"]
 	path = client/toolchain/docker-old-tc-bootstrap
-	url = https://github.com/alxchk/docker-old-tc-bootstrap
+	url = https://github.com/alxchk/docker-old-tc-bootstrap.git
 [submodule "client/toolchain/docker-old-tc"]
 	path = client/toolchain/docker-old-tc
-	url = https://github.com/alxchk/docker-old-tc
+	url = https://github.com/alxchk/docker-old-tc.git
 [submodule "pupy/external/pyopus"]
 	path = pupy/external/pyopus
-	url = https://github.com/alxchk/pyopus
+	url = https://github.com/alxchk/pyopus.git
 [submodule "pupy/external/WinPwnage"]
 	path = pupy/external/WinPwnage
-	url = https://github.com/rootm0s/WinPwnage
+	url = https://github.com/rootm0s/WinPwnage.git
 [submodule "pupy/external/wesng"]
 	path = pupy/external/wesng
-	url = https://github.com/bitsadmin/wesng
+	url = https://github.com/bitsadmin/wesng.git
