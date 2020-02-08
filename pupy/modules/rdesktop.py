@@ -11,6 +11,8 @@ import json
 from pupylib.PupyModule import PupyModule, config, PupyArgumentParser
 from pupylib.PupyWeb import RequestHandler, WebSocketHandler, tornado
 from pupylib.PupyLogger import getLogger
+from pupylib.PupyConfig import PupyConfig
+from pupylib.utils.network import get_listener_ip, get_listener_port
 
 logger = getLogger('rdesktop')
 
@@ -166,7 +168,10 @@ class RemoteDesktopModule(PupyModule):
             return
 
         port, path = conninfo
-        self.success("Web handler started on http://127.0.0.1:%d%s"%(port, path))
+
+        config = PupyConfig()
+        myip = get_listener_ip(external=True, config=config)
+        self.success("Web handler started on http://%s:%d%s"%(myip, port, path))
         if args.view:
             config = self.client.pupsrv.config
             viewer = config.get('default_viewers', 'browser')
