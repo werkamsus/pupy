@@ -76,12 +76,12 @@ class WebSocketHandler(TornadoWebSocketHandler):
         self.set_header('Server', SERVER_HEADER)
 
     def prepare(self, *args, **kwargs):
-        if self.request.remote_ip not in self.local_ips:
-            self.set_status(403)
+        # if self.request.remote_ip not in self.local_ips:
+        #     self.set_status(403)
 
-            log_msg = 'Connection allowed only from local addresses'
-            self.finish(log_msg)
-            return
+        #     log_msg = 'Connection allowed only from local addresses'
+        #     self.finish(log_msg)
+        #     return
 
         super(WebSocketHandler, self).prepare(*args, **kwargs)
 
@@ -94,11 +94,11 @@ class RequestHandler(TornadoRequestHandler):
         self.set_header('Server', SERVER_HEADER)
 
     def prepare(self, *args, **kwargs):
-        if self.request.remote_ip not in self.local_ips:
-            self.set_status(403)
-            log_msg = 'Connection allowed only from local addresses'
-            self.finish(log_msg)
-            return
+        # if self.request.remote_ip not in self.local_ips:
+        #     self.set_status(403)
+        #     log_msg = 'Connection allowed only from local addresses'
+        #     self.finish(log_msg)
+        #     return
 
         super(RequestHandler, self).prepare(*args, **kwargs)
 
