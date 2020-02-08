@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from pupylib.PupyOutput import (
+    Hint, Text, NewLine, Title, MultiPart, Indent, Color,
+    TruncateToTerm, Error, Log, Warn, Success, Info,
+    ServiceInfo, Section, Line, List, Table, Pygment
+)
 import random
 import os
 import struct
@@ -18,13 +23,8 @@ if TERM and TERM.endswith('256color'):
 else:
     from pygments.formatters import TerminalFormatter
 
-from pupylib.PupyOutput import (
-    Hint, Text, NewLine, Title, MultiPart, Indent, Color,
-    TruncateToTerm, Error, Log, Warn, Success, Info,
-    ServiceInfo, Section, Line, List, Table, Pygment
-)
 
-PYGMENTS_STYLE='native'
+PYGMENTS_STYLE = 'native'
 
 ESC_REGEX = re.compile(r'(\033[^m]+m)')
 
@@ -50,6 +50,8 @@ SHADOW_SCREEN_FROM = '\033[?1049l'
 RESET = '\033g\033c\033r\033m'
 
 # https://gist.githubusercontent.com/jtriley/1108174/raw/6ec4c846427120aa342912956c7f717b586f1ddb/terminalsize.py
+
+
 def consize(file=None):
     """ getTerminalSize()
      - get width and height of console
@@ -66,6 +68,7 @@ def consize(file=None):
 
     return tuple_xy or (None, None)
 
+
 def _size_windows(file=None):
     try:
         from ctypes import windll, create_string_buffer
@@ -81,6 +84,7 @@ def _size_windows(file=None):
             return sizex, sizey
     except:
         pass
+
 
 def _size_linux(file=None):
     def ioctl_GWINSZ(fd):
@@ -114,6 +118,7 @@ def _size_linux(file=None):
 
     return int(cr[1]), int(cr[0])
 
+
 def colorize(text, color, prompt=False):
     if not text:
         return ''
@@ -140,17 +145,22 @@ def colorize(text, color, prompt=False):
 
     sequence.append(eccode)
 
-
     if ccode:
         joiner = u'' if ttype == unicode else ''
         return joiner.join(sequence)
 
     return text
 
+
 def terminal_size():
-    h, w, hp, wp = struct.unpack('HHHH',
-        fcntl.ioctl(0, termios.TIOCGWINSZ,
-        struct.pack('HHHH', 0, 0, 0, 0)))
+    w = 80
+    h = 40
+    try:
+        h, w, hp, wp = struct.unpack('HHHH',
+                                     fcntl.ioctl(0, termios.TIOCGWINSZ,
+                                                 struct.pack('HHHH', 0, 0, 0, 0)))
+    except:
+        pass
     return w, h
 
 
@@ -163,8 +173,10 @@ def ediff(s):
 
     return utf8diff + len(''.join(ESC_REGEX.findall(s)))
 
+
 def elen(s):
     return len(s) - ediff(s)
+
 
 def ejust(line, width):
     initial = line
@@ -184,6 +196,7 @@ def ejust(line, width):
         pass
 
     return line
+
 
 def obj2utf8(obj):
     objtype = type(obj)
@@ -217,6 +230,7 @@ def obj2utf8(obj):
 
     return obj
 
+
 def get_columns_size(columns):
     size_dic = {}
     for column in columns:
@@ -226,6 +240,7 @@ def get_columns_size(columns):
                 size_dic[key] = value_elen
 
     return size_dic
+
 
 def table_format(diclist, wl=[], bl=[], truncate=None, legend=True):
     """
@@ -247,7 +262,7 @@ def table_format(diclist, wl=[], bl=[], truncate=None, legend=True):
     ]
 
     titlesdic = {}
-    for key,title in keys:
+    for key, title in keys:
         titlesdic[key] = title
 
     if legend:
@@ -260,18 +275,19 @@ def table_format(diclist, wl=[], bl=[], truncate=None, legend=True):
         if i == 1 and legend:
             res.append(
                 u'-'*sum([
-                    k+2 for k in [y for x,y in colsize.iteritems() if x in titlesdic
-                ]]))
+                    k+2 for k in [y for x, y in colsize.iteritems() if x in titlesdic
+                                  ]]))
         i += 1
 
         lines = []
-        for key,_ in keys:
+        for key, _ in keys:
             value = c.get(key, '').strip()
             lines.append(value.ljust(colsize[key]+2 + ediff(value)))
 
         res.append(u''.join(lines))
 
     return '\n'.join(res)
+
 
 def hint_to_text(text, width=0):
     if text is None:
@@ -347,23 +363,24 @@ def hint_to_text(text, width=0):
         if header:
             text = '{}: {}'.format(colorize(header, 'yellow'), text)
 
-        return colorize('[-] ','red')+text
+        return colorize('[-] ', 'red')+text
     elif hint == Log:
         return hint_to_text(text.data, width).rstrip()
     elif hint == Warn:
-        return colorize('[!] ','yellow')+hint_to_text(text.data, width).rstrip()
+        return colorize('[!] ', 'yellow')+hint_to_text(text.data, width).rstrip()
     elif hint == Success:
-        return colorize('[+] ','green')+hint_to_text(text.data, width).rstrip()
+        return colorize('[+] ', 'green')+hint_to_text(text.data, width).rstrip()
     elif hint == Info:
-        return colorize('[%] ','grey')+hint_to_text(text.data, width).rstrip()
+        return colorize('[%] ', 'grey')+hint_to_text(text.data, width).rstrip()
     elif hint == ServiceInfo:
         return ''.join([
-            colorize('[*] ','blue'),
+            colorize('[*] ', 'blue'),
             hint_to_text(text.data, width).rstrip()
         ])
     elif hint == Section:
         return '\n'.join([
-            colorize('#>#>  ','green') + hint_to_text(text.header, width)+ colorize('  <#<#','green'),
+            colorize('#>#>  ', 'green') + hint_to_text(text.header,
+                                                       width) + colorize('  <#<#', 'green'),
             hint_to_text(text.data, width)
         ])
     elif hint == Line:
@@ -373,7 +390,8 @@ def hint_to_text(text, width=0):
             '\n'.join([
                 (
                     (' '*text.indent) + (
-                        (hint_to_text(text.bullet, width) + ' ') if text.bullet else ''
+                        (hint_to_text(text.bullet, width) +
+                         ' ') if text.bullet else ''
                     ) + hint_to_text(x, width)
                 ) for x in text.data
             ])
@@ -381,12 +399,14 @@ def hint_to_text(text, width=0):
     elif hint == Table:
         table_data = [
             {
-                k:hint_to_text(v, width) for k,v in record.iteritems()
+                k: hint_to_text(v, width) for k, v in record.iteritems()
             } for record in text.data
         ]
 
         return (
-            '\n'*text.vspace + '{ ' + hint_to_text(text.caption, width) + ' }\n' if text.caption else ''
+            '\n'*text.vspace +
+            '{ ' + hint_to_text(text.caption, width) +
+            ' }\n' if text.caption else ''
         ) + table_format(table_data, wl=text.headers, legend=text.legend) + '\n'*text.vspace
 
     elif hint == Pygment:
