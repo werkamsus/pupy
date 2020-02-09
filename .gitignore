@@ -6,6 +6,9 @@ pupy/crypto/*.py
 pupy/.pupy_history
 pupy/pupy_*
 pupy/db
+pupyw
+payload_templates.txz
+.pupy_history
 .DS_Store
 *.swp
 
